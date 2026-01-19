@@ -1,10 +1,11 @@
 import { FileText, Users, AlertTriangle, ShoppingCart } from 'lucide-react';
 import { KPICard } from './KPICard';
 import { ContractsTable } from './ContractsTable';
-import { kpiData, contracts } from '@/data/mockData';
+import { kpiData, contracts, consultants } from '@/data/mockData';
 
 export function StatusView() {
   const expiringContracts = contracts.filter(c => c.status === 'expiring');
+  const activeConsultants = consultants.filter(c => c.status === 'active');
 
   return (
     <div className="p-4 space-y-6">
@@ -17,9 +18,18 @@ export function StatusView() {
         />
         <KPICard
           title="Konsulter i leverans"
-          value={kpiData.consultantsInDelivery}
+          value={activeConsultants.length}
           icon={<Users className="w-5 h-5" />}
-        />
+        >
+          <ul className="space-y-1">
+            {activeConsultants.map((consultant) => (
+              <li key={consultant.id} className="flex items-center justify-between text-xs">
+                <span className="text-foreground">{consultant.name}</span>
+                <span className="text-muted-foreground">{consultant.utilization}%</span>
+              </li>
+            ))}
+          </ul>
+        </KPICard>
         <KPICard
           title="Kräver hantering"
           value={expiringContracts.length}
