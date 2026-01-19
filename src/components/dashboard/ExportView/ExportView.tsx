@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Download, Search, FileSpreadsheet } from 'lucide-react';
 import { assignments } from '@/data/mockData';
+import styles from './ExportView.module.css';
 
 export function ExportView() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -43,56 +44,82 @@ export function ExportView() {
     }).format(value);
   };
 
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case 'active':
+        return styles.statusActive;
+      case 'completed':
+        return styles.statusCompleted;
+      case 'planned':
+        return styles.statusPending;
+      default:
+        return '';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'active':
+        return 'Aktiv';
+      case 'completed':
+        return 'Avslutad';
+      case 'planned':
+        return 'Planerad';
+      default:
+        return status;
+    }
+  };
+
   return (
-    <div className="p-4 space-y-6">
+    <div className={styles.container}>
       {/* Färdiga rapporter placeholder */}
-      <div className="dashboard-card animate-fade-in">
-        <div className="flex items-center gap-3 mb-4">
-          <FileSpreadsheet className="w-5 h-5 text-primary" />
-          <h3 className="text-lg font-semibold">Färdiga rapporter</h3>
+      <div className={styles.card}>
+        <div className={styles.sectionHeader}>
+          <FileSpreadsheet className={styles.sectionIcon} />
+          <h3 className={styles.sectionTitle}>Färdiga rapporter</h3>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className={styles.placeholderText}>
           Inga rapporter tillgängliga just nu. Välj uppdrag nedan för att skapa en ny rapport.
         </p>
       </div>
 
       {/* Export section */}
-      <div className="dashboard-card animate-fade-in">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Välj uppdrag</h3>
+      <div className={styles.card}>
+        <div className={styles.headerRow}>
+          <h3 className={styles.sectionTitle}>Välj uppdrag</h3>
           <button
             onClick={handleExport}
             disabled={selectedIds.length === 0}
-            className="btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className={styles.exportButton}
           >
-            <Download className="w-4 h-4" />
+            <Download className={styles.exportIcon} />
             Exportera till Excel ({selectedIds.length})
           </button>
         </div>
 
         {/* Search */}
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <div className={styles.searchWrapper}>
+          <Search className={styles.searchIcon} />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Sök uppdrag..."
-            className="input-field pl-10"
+            className={styles.searchInput}
           />
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="data-table">
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
             <thead>
               <tr>
-                <th className="w-12">
+                <th className={styles.checkboxCell}>
                   <input
                     type="checkbox"
                     checked={selectedIds.length === filteredAssignments.length && filteredAssignments.length > 0}
                     onChange={toggleAll}
-                    className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
+                    className={styles.checkbox}
                   />
                 </th>
                 <th>Projektnr</th>
@@ -107,7 +134,6 @@ export function ExportView() {
               {filteredAssignments.map((assignment) => (
                 <tr
                   key={assignment.id}
-                  className="cursor-pointer"
                   onClick={() => toggleSelection(assignment.id)}
                 >
                   <td>
@@ -116,23 +142,17 @@ export function ExportView() {
                       checked={selectedIds.includes(assignment.id)}
                       onChange={() => toggleSelection(assignment.id)}
                       onClick={(e) => e.stopPropagation()}
-                      className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
+                      className={styles.checkbox}
                     />
                   </td>
-                  <td className="font-medium">{assignment.projectNumber}</td>
+                  <td className={styles.fontMedium}>{assignment.projectNumber}</td>
                   <td>{assignment.client}</td>
                   <td>{formatDate(assignment.startDate)}</td>
                   <td>{formatDate(assignment.endDate)}</td>
                   <td>{formatCurrency(assignment.budget)}</td>
                   <td>
-                    <span className={`status-badge ${
-                      assignment.status === 'active' ? 'status-badge-active' :
-                      assignment.status === 'completed' ? 'bg-gray-100 text-gray-800' :
-                      'status-badge-pending'
-                    }`}>
-                      {assignment.status === 'active' && 'Aktiv'}
-                      {assignment.status === 'completed' && 'Avslutad'}
-                      {assignment.status === 'planned' && 'Planerad'}
+                    <span className={`${styles.statusBadge} ${getStatusClass(assignment.status)}`}>
+                      {getStatusText(assignment.status)}
                     </span>
                   </td>
                 </tr>

@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { TabsBar } from '@/components/layout/TabsBar';
-import { StatusView } from '@/components/dashboard/StatusView';
-import { OrderView } from '@/components/dashboard/OrderView';
-import { ExportView } from '@/components/dashboard/ExportView';
+import { DashboardLayout } from '@/components/layout/DashboardLayout/DashboardLayout';
+import { TabsBar } from '@/components/layout/TabsBar/TabsBar';
+import { StatusView } from '@/components/dashboard/StatusView/StatusView';
+import { OrderView } from '@/components/dashboard/OrderView/OrderView';
+import { ExportView } from '@/components/dashboard/ExportView/ExportView';
 
 type TabType = 'status' | 'order' | 'export';
 

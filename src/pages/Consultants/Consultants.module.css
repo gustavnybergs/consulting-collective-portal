@@ -1,0 +1,99 @@
+.container {
+  padding: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: hsl(var(--foreground));
+}
+
+.card {
+  background-color: hsl(var(--card));
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-card);
+  padding: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.consultantCard {
+  padding: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  transition: border-color 0.2s;
+}
+
+.consultantCard:hover {
+  border-color: hsl(var(--primary) / 0.3);
+}
+
+.consultantHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: hsl(var(--primary) / 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: hsl(var(--primary));
+}
+
+.consultantName {
+  font-weight: 500;
+  color: hsl(var(--foreground));
+}
+
+.consultantRole {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.utilization {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.utilizationLabel {
+  color: hsl(var(--muted-foreground));
+}
+
+.utilizationValue {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.utilizationValue.full {
+  color: hsl(142 76% 36%);
+}

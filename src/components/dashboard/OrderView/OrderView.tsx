@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { orders, Order } from '@/data/mockData';
-import { OrderForm } from './OrderForm';
-import { cn } from '@/lib/utils';
+import { OrderForm } from '../OrderForm/OrderForm';
+import styles from './OrderView.module.css';
 
 export function OrderView() {
   const [showForm, setShowForm] = useState(false);
@@ -27,22 +27,52 @@ export function OrderView() {
     // In real app, this would save to backend
   };
 
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case 'active':
+        return styles.statusActive;
+      case 'pending':
+        return styles.statusPending;
+      case 'completed':
+        return styles.statusCompleted;
+      case 'cancelled':
+        return styles.statusCancelled;
+      default:
+        return '';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'active':
+        return 'Aktiv';
+      case 'pending':
+        return 'Väntande';
+      case 'completed':
+        return 'Avslutad';
+      case 'cancelled':
+        return 'Avbruten';
+      default:
+        return status;
+    }
+  };
+
   return (
-    <div className="p-4 space-y-6">
+    <div className={styles.container}>
       {/* Header with button */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Beställningar</h2>
-        <button onClick={handleNewOrder} className="btn-primary flex items-center gap-2">
-          <Plus className="w-4 h-4" />
+      <div className={styles.header}>
+        <h2 className={styles.title}>Beställningar</h2>
+        <button onClick={handleNewOrder} className={styles.addButton}>
+          <Plus className={styles.addIcon} />
           Lägg ny beställning
         </button>
       </div>
 
       {/* Orders Table */}
-      <div className="dashboard-card animate-fade-in">
-        <h3 className="text-lg font-semibold mb-4">Aktiva beställningar</h3>
-        <div className="overflow-x-auto">
-          <table className="data-table">
+      <div className={styles.card}>
+        <h3 className={styles.cardTitle}>Aktiva beställningar</h3>
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
             <thead>
               <tr>
                 <th>Roll</th>
@@ -54,27 +84,14 @@ export function OrderView() {
             </thead>
             <tbody>
               {orders.map((order) => (
-                <tr
-                  key={order.id}
-                  onClick={() => handleRowClick(order)}
-                  className="cursor-pointer"
-                >
-                  <td className="font-medium">{order.role}</td>
+                <tr key={order.id} onClick={() => handleRowClick(order)}>
+                  <td className={styles.fontMedium}>{order.role}</td>
                   <td>{order.currency}</td>
                   <td>{formatDate(order.startDate)}</td>
                   <td>{formatDate(order.endDate)}</td>
                   <td>
-                    <span className={cn(
-                      'status-badge',
-                      order.status === 'active' && 'status-badge-active',
-                      order.status === 'pending' && 'status-badge-pending',
-                      order.status === 'completed' && 'bg-gray-100 text-gray-800',
-                      order.status === 'cancelled' && 'bg-red-100 text-red-800'
-                    )}>
-                      {order.status === 'active' && 'Aktiv'}
-                      {order.status === 'pending' && 'Väntande'}
-                      {order.status === 'completed' && 'Avslutad'}
-                      {order.status === 'cancelled' && 'Avbruten'}
+                    <span className={`${styles.statusBadge} ${getStatusClass(order.status)}`}>
+                      {getStatusText(order.status)}
                     </span>
                   </td>
                 </tr>
