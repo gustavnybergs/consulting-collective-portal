@@ -1,0 +1,64 @@
+.container {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .kpiGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .kpiGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.consultantList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.consultantItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+.consultantName {
+  color: hsl(var(--foreground));
+}
+
+.consultantUtilization {
+  color: hsl(var(--muted-foreground));
+}
+
+.contractItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+.contractRole {
+  color: hsl(var(--foreground));
+}
+
+.contractDays {
+  color: hsl(var(--accent));
+  font-weight: 500;
+}

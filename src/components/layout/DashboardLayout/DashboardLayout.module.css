@@ -1,0 +1,17 @@
+.layout {
+  min-height: 100vh;
+  background-color: hsl(var(--background));
+  display: flex;
+}
+
+.content {
+  flex: 1;
+  margin-left: 3.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  overflow: auto;
+}

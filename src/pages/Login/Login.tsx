@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, LogIn } from 'lucide-react';
+import styles from './Login.module.css';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -19,31 +20,31 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
+    <div className={styles.container}>
+      <div className={styles.wrapper}>
         {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-4">
-            <span className="text-primary-foreground font-bold text-2xl">CC</span>
+        <div className={styles.logoSection}>
+          <div className={styles.logoBox}>
+            <span className={styles.logoText}>CC</span>
           </div>
-          <h1 className="text-2xl font-bold text-foreground">Consulting Collective</h1>
-          <p className="text-sm text-muted-foreground mt-1">Kundportal</p>
+          <h1 className={styles.title}>Consulting Collective</h1>
+          <p className={styles.subtitle}>Kundportal</p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-card rounded-xl shadow-card p-6">
-          <h2 className="text-lg font-semibold mb-6 text-center">Logga in</h2>
+        <div className={styles.card}>
+          <h2 className={styles.cardTitle}>Logga in</h2>
           
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className={styles.form}>
             <div>
-              <label className="block text-sm font-medium mb-1.5">E-post</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <label className={styles.fieldLabel}>E-post</label>
+              <div className={styles.inputWrapper}>
+                <Mail className={styles.inputIcon} />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="input-field pl-10"
+                  className={styles.input}
                   placeholder="din@email.se"
                   required
                 />
@@ -51,14 +52,14 @@ export default function Login() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1.5">Lösenord</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <label className={styles.fieldLabel}>Lösenord</label>
+              <div className={styles.inputWrapper}>
+                <Lock className={styles.inputIcon} />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input-field pl-10"
+                  className={styles.input}
                   placeholder="••••••••"
                   required
                 />
@@ -68,30 +69,30 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="btn-primary w-full flex items-center justify-center gap-2 py-2.5 disabled:opacity-70"
+              className={styles.submitButton}
             >
               {isLoading ? (
-                <span className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                <span className={styles.spinner} />
               ) : (
                 <>
-                  <LogIn className="w-4 h-4" />
+                  <LogIn className={styles.inputIcon} style={{ position: 'static', transform: 'none', color: 'currentColor' }} />
                   Logga in
                 </>
               )}
             </button>
           </form>
 
-          <div className="mt-6 pt-4 border-t border-border text-center">
+          <div className={styles.footer}>
             <a
               href="mailto:vip@consultingcollective.se"
-              className="text-sm text-primary hover:underline"
+              className={styles.forgotLink}
             >
               Glömt lösenord?
             </a>
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground text-center mt-6">
+        <p className={styles.copyright}>
           © 2026 Consulting Collective. Alla rättigheter förbehållna.
         </p>
       </div>

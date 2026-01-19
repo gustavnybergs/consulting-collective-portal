@@ -1,6 +1,6 @@
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { DashboardLayout } from '@/components/layout/DashboardLayout/DashboardLayout';
 import { assignments } from '@/data/mockData';
-import { cn } from '@/lib/utils';
+import styles from './Assignments.module.css';
 
 export default function Assignments() {
   const formatDate = (dateString: string) => {
@@ -15,14 +15,40 @@ export default function Assignments() {
     }).format(value);
   };
 
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case 'active':
+        return styles.statusActive;
+      case 'completed':
+        return styles.statusCompleted;
+      case 'planned':
+        return styles.statusPending;
+      default:
+        return '';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'active':
+        return 'Aktiv';
+      case 'completed':
+        return 'Avslutad';
+      case 'planned':
+        return 'Planerad';
+      default:
+        return status;
+    }
+  };
+
   return (
     <DashboardLayout>
-      <div className="p-4">
-        <h1 className="text-2xl font-bold mb-6">Uppdrag</h1>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Uppdrag</h1>
         
-        <div className="dashboard-card">
-          <div className="overflow-x-auto">
-            <table className="data-table">
+        <div className={styles.card}>
+          <div className={styles.tableWrapper}>
+            <table className={styles.table}>
               <thead>
                 <tr>
                   <th>Projektnr</th>
@@ -35,22 +61,15 @@ export default function Assignments() {
               </thead>
               <tbody>
                 {assignments.map((assignment) => (
-                  <tr key={assignment.id} className="cursor-pointer">
-                    <td className="font-medium">{assignment.projectNumber}</td>
+                  <tr key={assignment.id}>
+                    <td className={styles.fontMedium}>{assignment.projectNumber}</td>
                     <td>{assignment.client}</td>
                     <td>{formatDate(assignment.startDate)}</td>
                     <td>{formatDate(assignment.endDate)}</td>
                     <td>{formatCurrency(assignment.budget)}</td>
                     <td>
-                      <span className={cn(
-                        'status-badge',
-                        assignment.status === 'active' && 'status-badge-active',
-                        assignment.status === 'completed' && 'bg-gray-100 text-gray-800',
-                        assignment.status === 'planned' && 'status-badge-pending'
-                      )}>
-                        {assignment.status === 'active' && 'Aktiv'}
-                        {assignment.status === 'completed' && 'Avslutad'}
-                        {assignment.status === 'planned' && 'Planerad'}
+                      <span className={`${styles.statusBadge} ${getStatusClass(assignment.status)}`}>
+                        {getStatusText(assignment.status)}
                       </span>
                     </td>
                   </tr>

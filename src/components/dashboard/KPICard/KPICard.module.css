@@ -1,0 +1,50 @@
+.card {
+  background-color: hsl(var(--card));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: var(--shadow-card);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cardHighlight {
+  border-left: 4px solid hsl(var(--accent));
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+}
+
+.icon {
+  color: hsl(var(--muted-foreground));
+}
+
+.value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.children {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+}

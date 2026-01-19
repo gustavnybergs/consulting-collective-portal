@@ -1,0 +1,78 @@
+.container {
+  padding: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: hsl(var(--foreground));
+}
+
+.card {
+  background-color: hsl(var(--card));
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-card);
+  padding: 1.5rem;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  border-bottom: 1px solid hsl(var(--border));
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.table tbody tr:hover {
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+.fontMedium {
+  font-weight: 500;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.statusActive {
+  background-color: hsl(var(--success) / 0.15);
+  color: hsl(var(--success));
+}
+
+.statusCompleted {
+  background-color: hsl(220 14% 96%);
+  color: hsl(220 9% 46%);
+}
+
+.statusPending {
+  background-color: hsl(var(--warning) / 0.15);
+  color: hsl(var(--warning));
+}
