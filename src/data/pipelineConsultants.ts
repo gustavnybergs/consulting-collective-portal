@@ -10,93 +10,76 @@ export interface PipelineConsultant {
   location: string;
 }
 
-export const pipelineConsultants: PipelineConsultant[] = [
-  {
-    id: '1',
-    firstName: 'Anna',
-    lastName: 'Lindgren',
-    email: 'anna.lindgren@email.se',
-    phone: '+46 70 123 45 67',
-    linkedIn: 'https://linkedin.com/in/annalindgren',
-    profileImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
-    role: 'Senior Utvecklare',
-    location: 'Stockholm',
-  },
-  {
-    id: '2',
-    firstName: 'Erik',
-    lastName: 'Johansson',
-    email: 'erik.johansson@email.se',
-    phone: '+46 70 234 56 78',
-    linkedIn: 'https://linkedin.com/in/erikjohansson',
-    profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-    role: 'Projektledare',
-    location: 'Göteborg',
-  },
-  {
-    id: '3',
-    firstName: 'Maria',
-    lastName: 'Svensson',
-    email: 'maria.svensson@email.se',
-    phone: '+46 70 345 67 89',
-    linkedIn: 'https://linkedin.com/in/mariasvensson',
-    profileImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
-    role: 'UX Designer',
-    location: 'Malmö',
-  },
-  {
-    id: '4',
-    firstName: 'Johan',
-    lastName: 'Nilsson',
-    email: 'johan.nilsson@email.se',
-    phone: '+46 70 456 78 90',
-    linkedIn: 'https://linkedin.com/in/johannilsson',
-    profileImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
-    role: 'DevOps Engineer',
-    location: 'Stockholm',
-  },
-  {
-    id: '5',
-    firstName: 'Sofia',
-    lastName: 'Andersson',
-    email: 'sofia.andersson@email.se',
-    phone: '+46 70 567 89 01',
-    linkedIn: 'https://linkedin.com/in/sofiaandersson',
-    profileImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop',
-    role: 'Tech Lead',
-    location: 'Uppsala',
-  },
-  {
-    id: '6',
-    firstName: 'Marcus',
-    lastName: 'Berg',
-    email: 'marcus.berg@email.se',
-    phone: '+46 70 678 90 12',
-    linkedIn: 'https://linkedin.com/in/marcusberg',
-    profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
-    role: 'Backend Utvecklare',
-    location: 'Malmö',
-  },
-  {
-    id: '7',
-    firstName: 'Emma',
-    lastName: 'Karlsson',
-    email: 'emma.karlsson@email.se',
-    phone: '+46 70 789 01 23',
-    linkedIn: 'https://linkedin.com/in/emmakarlsson',
-    profileImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop',
-    role: 'Scrum Master',
-    location: 'Stockholm',
-  },
-  {
-    id: '8',
-    firstName: 'Oscar',
-    lastName: 'Eriksson',
-    email: 'oscar.eriksson@email.se',
-    phone: '+46 70 890 12 34',
-    linkedIn: 'https://linkedin.com/in/oscareriksson',
-    profileImage: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop',
-    role: 'Frontend Utvecklare',
-    location: 'Göteborg',
-  },
+export const roles = [
+  'Fullstack Utvecklare',
+  'Frontend Utvecklare',
+  'Backend Utvecklare',
+  'DevOps Engineer',
+  'UX Designer',
+  'UI Designer',
+  'Projektledare',
+  'Scrum Master',
+  'Tech Lead',
+  'Data Engineer',
+  'Cloud Architect',
+  'QA Engineer',
 ];
+
+export const locations = ['Stockholm', 'Göteborg', 'Malmö', 'Uppsala', 'Linköping', 'Lund'];
+
+const firstNames = [
+  'Anna', 'Erik', 'Maria', 'Johan', 'Sofia', 'Marcus', 'Emma', 'Oscar',
+  'Lina', 'Gustav', 'Ida', 'Axel', 'Elin', 'Viktor', 'Sara', 'David',
+  'Klara', 'Filip', 'Maja', 'Simon', 'Wilma', 'Lucas', 'Alice', 'Hugo',
+  'Elsa', 'Leo', 'Freja', 'Nils', 'Saga', 'Emil', 'Astrid', 'Felix',
+  'Vera', 'Adam', 'Alma', 'Oskar', 'Ebba', 'William', 'Molly', 'Alexander'
+];
+
+const lastNames = [
+  'Lindgren', 'Johansson', 'Svensson', 'Nilsson', 'Andersson', 'Berg', 'Karlsson', 'Eriksson',
+  'Larsson', 'Olsson', 'Persson', 'Pettersson', 'Gustafsson', 'Jonsson', 'Hansson', 'Bengtsson',
+  'Lindqvist', 'Sandberg', 'Lindström', 'Bergström', 'Mattsson', 'Lundberg', 'Forsberg', 'Engström',
+  'Eklund', 'Holmberg', 'Nyström', 'Löfgren', 'Söderberg', 'Hedlund', 'Sundberg', 'Norberg',
+  'Sjöberg', 'Wallin', 'Lund', 'Björk', 'Bergman', 'Fransson', 'Holm', 'Samuelsson'
+];
+
+const profileImages = [
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1502767089025-6572583495b9?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop',
+];
+
+export const pipelineConsultants: PipelineConsultant[] = Array.from({ length: 40 }, (_, i) => {
+  const firstName = firstNames[i % firstNames.length];
+  const lastName = lastNames[i % lastNames.length];
+  const emailName = `${firstName.toLowerCase()}.${lastName.toLowerCase()}`;
+  
+  return {
+    id: String(i + 1),
+    firstName,
+    lastName,
+    email: `${emailName}@email.se`,
+    phone: `+46 70 ${String(100 + i).padStart(3, '0')} ${String(10 + i).padStart(2, '0')} ${String(20 + i).padStart(2, '0')}`,
+    linkedIn: `https://linkedin.com/in/${emailName.replace('.', '')}`,
+    profileImage: profileImages[i % profileImages.length],
+    role: roles[i % roles.length],
+    location: locations[i % locations.length],
+  };
+});

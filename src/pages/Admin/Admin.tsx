@@ -1,19 +1,17 @@
 import { useState, useMemo } from 'react';
-import { Search, Filter, SortDesc, MapPin, Mail, Phone, Linkedin, X } from 'lucide-react';
+import { Search, MapPin, Mail, Phone, Linkedin, X, Users, Copy } from 'lucide-react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout/DashboardLayout';
 import { ConsultantCard } from '@/components/admin/ConsultantCard/ConsultantCard';
-import { pipelineConsultants, PipelineConsultant } from '@/data/pipelineConsultants';
+import { pipelineConsultants, PipelineConsultant, roles, locations } from '@/data/pipelineConsultants';
 import styles from './Admin.module.css';
 
 export default function Admin() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedConsultant, setSelectedConsultant] = useState<PipelineConsultant | null>(null);
   const [locationFilter, setLocationFilter] = useState<string>('');
-
-  const locations = useMemo(() => {
-    const locs = [...new Set(pipelineConsultants.map((c) => c.location))];
-    return locs.sort();
-  }, []);
+  const [roleFilter, setRoleFilter] = useState<string>('');
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [showContactModal, setShowContactModal] = useState(false);
 
   const filteredConsultants = useMemo(() => {
     return pipelineConsultants.filter((consultant) => {
@@ -24,10 +22,11 @@ export default function Admin() {
         consultant.location.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesLocation = locationFilter === '' || consultant.location === locationFilter;
+      const matchesRole = roleFilter === '' || consultant.role === roleFilter;
 
-      return matchesSearch && matchesLocation;
+      return matchesSearch && matchesLocation && matchesRole;
     });
-  }, [searchQuery, locationFilter]);
+  }, [searchQuery, locationFilter, roleFilter]);
 
   const handleCardClick = (consultant: PipelineConsultant) => {
     setSelectedConsultant(consultant);
@@ -35,6 +34,49 @@ export default function Admin() {
 
   const closeModal = () => {
     setSelectedConsultant(null);
+  };
+
+  const toggleSelection = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filteredConsultants.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filteredConsultants.map((c) => c.id)));
+    }
+  };
+
+  const selectedConsultants = useMemo(() => {
+    return pipelineConsultants.filter((c) => selectedIds.has(c.id));
+  }, [selectedIds]);
+
+  const handleContactAll = () => {
+    if (selectedConsultants.length > 0) {
+      setShowContactModal(true);
+    }
+  };
+
+  const getEmailList = () => {
+    return selectedConsultants.map((c) => c.email).join(', ');
+  };
+
+  const copyEmails = () => {
+    navigator.clipboard.writeText(getEmailList());
+  };
+
+  const openMailClient = () => {
+    const emails = selectedConsultants.map((c) => c.email).join(',');
+    window.location.href = `mailto:${emails}`;
   };
 
   return (
@@ -69,12 +111,50 @@ export default function Admin() {
                 </option>
               ))}
             </select>
+            <select
+              className={styles.filterButton}
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+            >
+              <option value="">Alla roller</option>
+              {roles.map((role) => (
+                <option key={role} value={role}>
+                  {role}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
-        <p className={styles.stats}>
-          Visar {filteredConsultants.length} av {pipelineConsultants.length} konsulter
-        </p>
+        <div className={styles.statsBar}>
+          <p className={styles.stats}>
+            Visar {filteredConsultants.length} av {pipelineConsultants.length} konsulter
+          </p>
+          <div className={styles.selectionBar}>
+            <label className={styles.selectAllLabel}>
+              <input
+                type="checkbox"
+                className={styles.selectAllCheckbox}
+                checked={selectedIds.size === filteredConsultants.length && filteredConsultants.length > 0}
+                onChange={toggleSelectAll}
+              />
+              Välj alla
+            </label>
+            {selectedIds.size > 0 && (
+              <span className={styles.selectedCount}>
+                {selectedIds.size} valda
+              </span>
+            )}
+            <button
+              className={styles.contactAllButton}
+              onClick={handleContactAll}
+              disabled={selectedIds.size === 0}
+            >
+              <Mail size={16} />
+              Kontakta valda
+            </button>
+          </div>
+        </div>
 
         <div className={styles.grid}>
           {filteredConsultants.map((consultant) => (
@@ -82,11 +162,13 @@ export default function Admin() {
               key={consultant.id}
               consultant={consultant}
               onClick={handleCardClick}
+              selected={selectedIds.has(consultant.id)}
+              onSelect={toggleSelection}
             />
           ))}
         </div>
 
-        {/* Modal */}
+        {/* Consultant Detail Modal */}
         {selectedConsultant && (
           <div className={styles.modalOverlay} onClick={closeModal}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -133,6 +215,47 @@ export default function Admin() {
                     <Linkedin className={styles.modalContactIcon} />
                     <span className={styles.modalContactText}>Visa LinkedIn-profil</span>
                   </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Contact Multiple Modal */}
+        {showContactModal && (
+          <div className={styles.modalOverlay} onClick={() => setShowContactModal(false)}>
+            <div className={styles.contactModal} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.contactModalHeader}>
+                <h2 className={styles.contactModalTitle}>
+                  Kontakta {selectedConsultants.length} konsulter
+                </h2>
+                <button className={styles.modalCloseButton} onClick={() => setShowContactModal(false)}>
+                  <X size={18} />
+                </button>
+              </div>
+              <div className={styles.contactModalContent}>
+                <div className={styles.recipientsList}>
+                  {selectedConsultants.map((c) => (
+                    <span key={c.id} className={styles.recipientTag}>
+                      {c.firstName} {c.lastName}
+                    </span>
+                  ))}
+                </div>
+                <div className={styles.contactActions}>
+                  <button className={styles.contactActionButton} onClick={openMailClient}>
+                    <Mail className={styles.contactActionIcon} />
+                    <div className={styles.contactActionText}>
+                      <span className={styles.contactActionTitle}>Öppna i e-postklient</span>
+                      <span className={styles.contactActionDesc}>Skapa ett nytt mail med alla mottagare</span>
+                    </div>
+                  </button>
+                  <button className={styles.contactActionButton} onClick={copyEmails}>
+                    <Copy className={styles.contactActionIcon} />
+                    <div className={styles.contactActionText}>
+                      <span className={styles.contactActionTitle}>Kopiera e-postadresser</span>
+                      <span className={styles.contactActionDesc}>{getEmailList().substring(0, 50)}...</span>
+                    </div>
+                  </button>
                 </div>
               </div>
             </div>
