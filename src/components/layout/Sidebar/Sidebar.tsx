@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Briefcase } from 'lucide-react';
+import { LayoutDashboard, Users, Briefcase, Settings } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './Sidebar.module.css';
 
@@ -6,6 +6,7 @@ const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
   { icon: Users, label: 'Konsulter', path: '/consultants' },
   { icon: Briefcase, label: 'Uppdrag', path: '/assignments' },
+  { icon: Settings, label: 'Admin', path: '/admin' },
 ];
 
 export function Sidebar() {
