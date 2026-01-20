@@ -3,10 +3,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Consultants from "./pages/Consultants";
-import Assignments from "./pages/Assignments";
+import Login from "./pages/Login/Login";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Consultants from "./pages/Consultants/Consultants";
+import Assignments from "./pages/Assignments/Assignments";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
