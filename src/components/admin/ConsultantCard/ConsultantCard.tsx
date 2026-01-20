@@ -5,12 +5,29 @@ import styles from './ConsultantCard.module.css';
 interface ConsultantCardProps {
   consultant: PipelineConsultant;
   onClick?: (consultant: PipelineConsultant) => void;
+  selected?: boolean;
+  onSelect?: (id: string) => void;
 }
 
-export function ConsultantCard({ consultant, onClick }: ConsultantCardProps) {
+export function ConsultantCard({ consultant, onClick, selected, onSelect }: ConsultantCardProps) {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    onSelect?.(consultant.id);
+  };
+
   return (
-    <div className={styles.card} onClick={() => onClick?.(consultant)}>
+    <div className={`${styles.card} ${selected ? styles.selected : ''}`} onClick={() => onClick?.(consultant)}>
       <div className={styles.imageContainer}>
+        {onSelect && (
+          <label className={styles.checkboxLabel} onClick={(e) => e.stopPropagation()}>
+            <input
+              type="checkbox"
+              className={styles.checkbox}
+              checked={selected || false}
+              onChange={handleCheckboxChange}
+            />
+          </label>
+        )}
         <img
           src={consultant.profileImage}
           alt={`${consultant.firstName} ${consultant.lastName}`}
