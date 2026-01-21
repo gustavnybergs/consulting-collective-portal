@@ -82,14 +82,21 @@ export default function Login() {
             </button>
           </form>
 
-          <div className={styles.footer}>
-            <a
-              href="mailto:vip@consultingcollective.se"
-              className={styles.forgotLink}
-            >
-              Glömt lösenord?
-            </a>
-          </div>
+        <div className={styles.footer}>
+          <a
+            href="mailto:vip@consultingcollective.se"
+            className={styles.forgotLink}
+          >
+            Glömt lösenord?
+          </a>
+        </div>
+
+        <div className={styles.registerSection}>
+          <p className={styles.registerText}>Vill du bli konsult hos oss?</p>
+          <a href="/apply" className={styles.registerLink}>
+            Registrera dig här
+          </a>
+        </div>
         </div>
 
         <p className={styles.copyright}>
