@@ -1,0 +1,559 @@
+.container {
+  padding: 24px;
+  background-color: #F5F5F5;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* Progress indicator */
+.progressContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.progressStep {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepCircle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.stepCircleActive {
+  background-color: #254F2C;
+  color: white;
+}
+
+.stepCircleCompleted {
+  background-color: #254F2C;
+  color: white;
+}
+
+.stepCircleInactive {
+  background-color: #e0e0e0;
+  color: #666;
+}
+
+.stepLabel {
+  font-size: 13px;
+  color: #666;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .stepLabel {
+    display: block;
+  }
+}
+
+.stepLabelActive {
+  color: #254F2C;
+  font-weight: 500;
+}
+
+.stepConnector {
+  width: 40px;
+  height: 2px;
+  background-color: #e0e0e0;
+}
+
+.stepConnectorActive {
+  background-color: #254F2C;
+}
+
+/* Form card */
+.formCard {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 32px;
+}
+
+.stepTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 24px 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Form elements */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 640px) {
+  .formGridTwo {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.formInput {
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #254F2C;
+  box-shadow: 0 0 0 3px rgba(37, 79, 44, 0.1);
+}
+
+.formInput::placeholder {
+  color: #999;
+}
+
+.formTextarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.formSelect {
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.formSelect:focus {
+  outline: none;
+  border-color: #254F2C;
+  box-shadow: 0 0 0 3px rgba(37, 79, 44, 0.1);
+}
+
+/* Section groups */
+.sectionGroup {
+  margin-bottom: 24px;
+}
+
+.sectionLabel {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+}
+
+/* Checkbox groups */
+.checkboxGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.checkboxItem:hover {
+  border-color: #254F2C;
+  background-color: #f5f5f5;
+}
+
+.checkboxItemSelected {
+  border-color: #254F2C;
+  background-color: rgba(37, 79, 44, 0.1);
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #254F2C;
+  cursor: pointer;
+}
+
+.checkboxLabel {
+  font-size: 14px;
+  color: #333;
+  flex: 1;
+}
+
+/* Role with years input */
+.roleItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.roleItemSelected {
+  border-color: #254F2C;
+  background-color: rgba(37, 79, 44, 0.1);
+}
+
+.roleHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.yearsInput {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  padding-left: 26px;
+}
+
+.yearsInputField {
+  width: 80px;
+  padding: 6px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.yearsInputField:focus {
+  outline: none;
+  border-color: #254F2C;
+}
+
+.yearsLabel {
+  font-size: 13px;
+  color: #666;
+}
+
+/* Custom role input */
+.customInputRow {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  margin-top: 16px;
+}
+
+.customInput {
+  flex: 1;
+}
+
+.addButton {
+  padding: 10px 20px;
+  background-color: #254F2C;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.addButton:hover {
+  background-color: #1a3a20;
+}
+
+/* Skills counter */
+.skillsCounter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #254F2C;
+  color: white;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+/* Reference cards */
+.referenceCard {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.referenceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.referenceTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.removeButton {
+  padding: 6px 12px;
+  background-color: transparent;
+  color: #dc2626;
+  border: 1px solid #dc2626;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.removeButton:hover {
+  background-color: #dc2626;
+  color: white;
+}
+
+.addReferenceButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  background-color: transparent;
+  border: 2px dashed #e0e0e0;
+  border-radius: 12px;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addReferenceButton:hover {
+  border-color: #254F2C;
+  color: #254F2C;
+}
+
+/* Radio groups */
+.radioGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.radioItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.radioItem:hover {
+  border-color: #254F2C;
+}
+
+.radioItemSelected {
+  border-color: #254F2C;
+  background-color: rgba(37, 79, 44, 0.1);
+}
+
+.radio {
+  width: 18px;
+  height: 18px;
+  accent-color: #254F2C;
+  cursor: pointer;
+}
+
+.radioLabel {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Nested radio group for security levels */
+.nestedRadioGroup {
+  margin-left: 26px;
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.nestedLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+/* File upload */
+.fileUpload {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  border: 2px dashed #e0e0e0;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fileUpload:hover {
+  border-color: #254F2C;
+  background-color: #f5f5f5;
+}
+
+.fileInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.fileUploadIcon {
+  width: 40px;
+  height: 40px;
+  color: #999;
+  margin-bottom: 12px;
+}
+
+.fileUploadText {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+.fileUploadHint {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.fileName {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: #254F2C;
+  color: white;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+/* Form note */
+.formNote {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Navigation buttons */
+.formNavigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.navButton {
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navButtonBack {
+  background-color: transparent;
+  border: 1px solid #e0e0e0;
+  color: #666;
+}
+
+.navButtonBack:hover {
+  border-color: #254F2C;
+  color: #254F2C;
+}
+
+.navButtonNext {
+  background-color: #254F2C;
+  border: none;
+  color: white;
+  margin-left: auto;
+}
+
+.navButtonNext:hover {
+  background-color: #1a3a20;
+}
+
+.navButtonSubmit {
+  background-color: #254F2C;
+  border: none;
+  color: white;
+  margin-left: auto;
+}
+
+.navButtonSubmit:hover {
+  background-color: #1a3a20;
+}
+
+/* Empty space placeholder */
+.spacer {
+  width: 120px;
+}
