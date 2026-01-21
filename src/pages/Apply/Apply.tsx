@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Check, Upload, Plus, Trash2 } from 'lucide-react';
-import { DashboardLayout } from '@/components/layout/DashboardLayout/DashboardLayout';
+import { Link } from 'react-router-dom';
+import { Check, Upload, Plus, Trash2, ArrowLeft } from 'lucide-react';
 import styles from './Apply.module.css';
 
 const STEPS = [
@@ -644,12 +644,22 @@ export default function Apply() {
   };
 
   return (
-    <DashboardLayout>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Ansök som konsult</h1>
-          <p className={styles.subtitle}>Fyll i formuläret för att gå med i vårt nätverk</p>
+    <div className={styles.pageContainer}>
+      <div className={styles.wrapper}>
+        {/* Header with logo */}
+        <div className={styles.logoSection}>
+          <div className={styles.logoBox}>
+            <span className={styles.logoText}>CC</span>
+          </div>
+          <h1 className={styles.title}>Consulting Collective</h1>
+          <p className={styles.subtitle}>Registrera dig som konsult</p>
         </div>
+
+        {/* Back to login link */}
+        <Link to="/" className={styles.backLink}>
+          <ArrowLeft size={16} />
+          Tillbaka till inloggning
+        </Link>
 
         {renderProgressIndicator()}
 
@@ -676,7 +686,11 @@ export default function Apply() {
             )}
           </div>
         </div>
+
+        <p className={styles.copyright}>
+          © 2026 Consulting Collective. Alla rättigheter förbehållna.
+        </p>
       </div>
-    </DashboardLayout>
+    </div>
   );
 }
