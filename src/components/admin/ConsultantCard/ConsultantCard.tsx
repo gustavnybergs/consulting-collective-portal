@@ -1,4 +1,4 @@
-import { Mail, Phone, Linkedin, MapPin } from 'lucide-react';
+import { Linkedin, MapPin, Mail, Phone } from 'lucide-react';
 import { PipelineConsultant } from '@/data/pipelineConsultants';
 import styles from './ConsultantCard.module.css';
 
@@ -14,6 +14,9 @@ export function ConsultantCard({ consultant, onClick, selected, onSelect }: Cons
     e.stopPropagation();
     onSelect?.(consultant.id);
   };
+
+  const displayedSkills = consultant.skills.slice(0, 3);
+  const remainingSkills = consultant.skills.length - 3;
 
   return (
     <div className={`${styles.card} ${selected ? styles.selected : ''}`} onClick={() => onClick?.(consultant)}>
@@ -34,7 +37,7 @@ export function ConsultantCard({ consultant, onClick, selected, onSelect }: Cons
           className={styles.profileImage}
         />
         <span className={styles.locationBadge}>
-          <MapPin size={12} />
+          <MapPin size={10} />
           {consultant.location}
         </span>
       </div>
@@ -43,32 +46,41 @@ export function ConsultantCard({ consultant, onClick, selected, onSelect }: Cons
           {consultant.firstName} {consultant.lastName}
         </h3>
         <p className={styles.role}>{consultant.role}</p>
-        <div className={styles.contactInfo}>
+        
+        <div className={styles.skillsContainer}>
+          {displayedSkills.map((skill) => (
+            <span key={skill} className={styles.skillTag}>{skill}</span>
+          ))}
+          {remainingSkills > 0 && (
+            <span className={styles.skillMore}>+{remainingSkills}</span>
+          )}
+        </div>
+
+        <div className={styles.contactRow}>
           <a
             href={`mailto:${consultant.email}`}
-            className={styles.contactItem}
+            className={styles.contactLink}
             onClick={(e) => e.stopPropagation()}
+            title={consultant.email}
           >
-            <Mail className={styles.contactIcon} />
-            <span>{consultant.email}</span>
+            <Mail size={14} />
           </a>
           <a
             href={`tel:${consultant.phone}`}
-            className={styles.contactItem}
+            className={styles.contactLink}
             onClick={(e) => e.stopPropagation()}
+            title={consultant.phone}
           >
-            <Phone className={styles.contactIcon} />
-            <span>{consultant.phone}</span>
+            <Phone size={14} />
           </a>
           <a
             href={consultant.linkedIn}
             target="_blank"
             rel="noopener noreferrer"
-            className={`${styles.contactItem} ${styles.linkedInLink}`}
+            className={`${styles.contactLink} ${styles.linkedInLink}`}
             onClick={(e) => e.stopPropagation()}
           >
-            <Linkedin className={styles.contactIcon} />
-            <span>LinkedIn Profil</span>
+            <Linkedin size={14} />
           </a>
         </div>
       </div>

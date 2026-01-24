@@ -8,6 +8,10 @@ export interface PipelineConsultant {
   profileImage: string;
   role: string;
   location: string;
+  skills: string[];
+  availableFrom: string;
+  bio: string;
+  portfolio: string;
 }
 
 export const roles = [
@@ -26,6 +30,21 @@ export const roles = [
 ];
 
 export const locations = ['Stockholm', 'Göteborg', 'Malmö', 'Uppsala', 'Linköping', 'Lund'];
+
+const allSkills = [
+  'React', 'TypeScript', 'JavaScript', 'Node.js', 'Python', 'Java', 'C#', '.NET',
+  'AWS', 'Azure', 'Docker', 'Kubernetes', 'PostgreSQL', 'MongoDB', 'GraphQL',
+  'Vue', 'Angular', 'Next.js', 'Tailwind', 'Figma', 'Sketch', 'Git', 'CI/CD',
+  'Agile', 'Scrum', 'REST API', 'Microservices', 'Redis', 'Elasticsearch'
+];
+
+const bios = [
+  'Erfaren utvecklare med passion för clean code och agila metoder. Trivs i team och gillar att dela kunskap.',
+  'Driven tekniker med fokus på skalbarhet och prestanda. Älskar att lösa komplexa problem.',
+  'Kreativ problemlösare med starkt affärssinne. Brinner för användarupplevelse och modern teknik.',
+  'Resultatorienterad med gedigen erfarenhet av stora projekt. Stark kommunikatör och teamspelare.',
+  'Teknisk ledare med bred erfarenhet. Fokuserar på kvalitet och kontinuerlig förbättring.',
+];
 
 const firstNames = [
   'Anna', 'Erik', 'Maria', 'Johan', 'Sofia', 'Marcus', 'Emma', 'Oscar',
@@ -66,6 +85,17 @@ const profileImages = [
   'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop',
 ];
 
+const getRandomSkills = (count: number): string[] => {
+  const shuffled = [...allSkills].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+};
+
+const getRandomDate = (): string => {
+  const today = new Date();
+  const futureDate = new Date(today.getTime() + Math.random() * 90 * 24 * 60 * 60 * 1000);
+  return futureDate.toISOString().split('T')[0];
+};
+
 export const pipelineConsultants: PipelineConsultant[] = Array.from({ length: 40 }, (_, i) => {
   const firstName = firstNames[i % firstNames.length];
   const lastName = lastNames[i % lastNames.length];
@@ -81,5 +111,9 @@ export const pipelineConsultants: PipelineConsultant[] = Array.from({ length: 40
     profileImage: profileImages[i % profileImages.length],
     role: roles[i % roles.length],
     location: locations[i % locations.length],
+    skills: getRandomSkills(4 + Math.floor(Math.random() * 5)),
+    availableFrom: getRandomDate(),
+    bio: bios[i % bios.length],
+    portfolio: `https://${firstName.toLowerCase()}${lastName.toLowerCase()}.dev`,
   };
 });
