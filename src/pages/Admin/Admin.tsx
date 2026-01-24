@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Search, MapPin, Mail, Phone, Linkedin, X, Users, Copy } from 'lucide-react';
+import { Search, MapPin, Mail, Phone, Linkedin, X, Copy, ExternalLink, Calendar } from 'lucide-react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout/DashboardLayout';
 import { ConsultantCard } from '@/components/admin/ConsultantCard/ConsultantCard';
 import { pipelineConsultants, PipelineConsultant, roles, locations } from '@/data/pipelineConsultants';
@@ -19,7 +19,8 @@ export default function Admin() {
         searchQuery === '' ||
         `${consultant.firstName} ${consultant.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
         consultant.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        consultant.location.toLowerCase().includes(searchQuery.toLowerCase());
+        consultant.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        consultant.skills.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()));
 
       const matchesLocation = locationFilter === '' || consultant.location === locationFilter;
       const matchesRole = roleFilter === '' || consultant.role === roleFilter;
@@ -77,6 +78,11 @@ export default function Admin() {
   const openMailClient = () => {
     const emails = selectedConsultants.map((c) => c.email).join(',');
     window.location.href = `mailto:${emails}`;
+  };
+
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' });
   };
 
   return (
@@ -172,51 +178,88 @@ export default function Admin() {
         {selectedConsultant && (
           <div className={styles.modalOverlay} onClick={closeModal}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-              <div className={styles.modalHeader}>
+              <button className={styles.modalCloseButton} onClick={closeModal}>
+                <X size={18} />
+              </button>
+              
+              <div className={styles.modalTop}>
                 <img
                   src={selectedConsultant.profileImage}
                   alt={`${selectedConsultant.firstName} ${selectedConsultant.lastName}`}
                   className={styles.modalImage}
                 />
-                <button className={styles.modalCloseButton} onClick={closeModal}>
-                  <X size={18} />
-                </button>
-              </div>
-              <div className={styles.modalContent}>
-                <h2 className={styles.modalName}>
-                  {selectedConsultant.firstName} {selectedConsultant.lastName}
-                </h2>
-                <p className={styles.modalRole}>{selectedConsultant.role}</p>
-                <span className={styles.modalLocation}>
-                  <MapPin size={14} />
-                  {selectedConsultant.location}
-                </span>
-                <div className={styles.modalContactList}>
-                  <a
-                    href={`mailto:${selectedConsultant.email}`}
-                    className={styles.modalContactItem}
-                  >
-                    <Mail className={styles.modalContactIcon} />
-                    <span className={styles.modalContactText}>{selectedConsultant.email}</span>
-                  </a>
-                  <a
-                    href={`tel:${selectedConsultant.phone}`}
-                    className={styles.modalContactItem}
-                  >
-                    <Phone className={styles.modalContactIcon} />
-                    <span className={styles.modalContactText}>{selectedConsultant.phone}</span>
-                  </a>
-                  <a
-                    href={selectedConsultant.linkedIn}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.modalContactItem}
-                  >
-                    <Linkedin className={styles.modalContactIcon} />
-                    <span className={styles.modalContactText}>Visa LinkedIn-profil</span>
-                  </a>
+                <div className={styles.modalInfo}>
+                  <h2 className={styles.modalName}>
+                    {selectedConsultant.firstName} {selectedConsultant.lastName}
+                  </h2>
+                  <p className={styles.modalRole}>{selectedConsultant.role}</p>
+                  <span className={styles.modalLocation}>
+                    <MapPin size={12} />
+                    {selectedConsultant.location}
+                  </span>
                 </div>
               </div>
+
+              <div className={styles.modalSection}>
+                <h4 className={styles.modalSectionTitle}>Skills</h4>
+                <div className={styles.modalSkills}>
+                  {selectedConsultant.skills.map((skill) => (
+                    <span key={skill} className={styles.modalSkillTag}>{skill}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className={styles.modalSection}>
+                <h4 className={styles.modalSectionTitle}>Om</h4>
+                <p className={styles.modalBio}>{selectedConsultant.bio}</p>
+              </div>
+
+              <div className={styles.modalMeta}>
+                <div className={styles.modalMetaItem}>
+                  <Calendar size={14} />
+                  <span>Tillgänglig från {formatDate(selectedConsultant.availableFrom)}</span>
+                </div>
+              </div>
+
+              <div className={styles.modalLinks}>
+                <a
+                  href={`mailto:${selectedConsultant.email}`}
+                  className={styles.modalLinkItem}
+                >
+                  <Mail size={16} />
+                  <span>{selectedConsultant.email}</span>
+                </a>
+                <a
+                  href={`tel:${selectedConsultant.phone}`}
+                  className={styles.modalLinkItem}
+                >
+                  <Phone size={16} />
+                  <span>{selectedConsultant.phone}</span>
+                </a>
+                <a
+                  href={selectedConsultant.linkedIn}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.modalLinkItem}
+                >
+                  <Linkedin size={16} />
+                  <span>LinkedIn</span>
+                </a>
+                <a
+                  href={selectedConsultant.portfolio}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.modalLinkItem}
+                >
+                  <ExternalLink size={16} />
+                  <span>Portfolio</span>
+                </a>
+              </div>
+
+              <button className={styles.bookButton}>
+                <Calendar size={16} />
+                Boka ett möte
+              </button>
             </div>
           </div>
         )}
