@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Building2, ArrowLeft, X, Save, Upload } from 'lucide-react';
+import { Building2, ArrowLeft, X, Save, Upload, Camera } from 'lucide-react';
 import styles from './ConsultantProfileEdit.module.css';
 
 const roleCategories = {
@@ -38,11 +38,40 @@ const skillCategories = {
   'Metodik & Verktyg': ['Agile/Scrum', 'Git', 'REST API', 'GraphQL', 'Microservices', 'TDD', 'Jira', 'Figma'],
 };
 
-const scopeOptions = ['25-50%', '50-75%', '75-100%', '100%'];
-const distanceOptions = ['På plats', 'Hybrid', 'Remote'];
+const hourlyRateOptions = [
+  'Under 500 kr',
+  '500-650 kr',
+  '651-800 kr',
+  '801-950 kr',
+  '951-1100 kr',
+  '1101-1250 kr',
+  '1251-1400 kr',
+  '1400+ kr',
+];
+
+const educationTypes = [
+  { id: 'yh', label: 'YH-utbildning' },
+  { id: 'kandidat', label: 'Kandidatexamen' },
+  { id: 'master', label: 'Masterexamen/Civilingenjör' },
+  { id: 'annan', label: 'Annan' },
+];
+
+interface EducationEntry {
+  type: string;
+  field: string;
+  institution: string;
+}
+
+interface UploadedFile {
+  name: string;
+  type: 'cv' | 'certificate' | 'reference';
+}
 
 const ConsultantProfileEdit = () => {
   const navigate = useNavigate();
+
+  // Profile image
+  const [profileImage, setProfileImage] = useState('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face');
 
   // Personal info
   const [firstName, setFirstName] = useState('Anna');
@@ -61,15 +90,35 @@ const ConsultantProfileEdit = () => {
     'React', 'TypeScript', 'Node.js', 'PostgreSQL', 'AWS', 'Docker', 'GraphQL', 'Next.js'
   ]);
 
-  // Other
+  // Availability and work preferences
   const [availableFrom, setAvailableFrom] = useState('2024-02-01');
-  const [scope, setScope] = useState<string[]>(['100%']);
-  const [distance, setDistance] = useState('Hybrid');
-  const [hourlyRate, setHourlyRate] = useState('950');
+  const [isFullyAvailable, setIsFullyAvailable] = useState(true);
+  const [canWorkOnsite, setCanWorkOnsite] = useState(true);
+  const [hourlyRate, setHourlyRate] = useState('801-950 kr');
+
+  // Employment type
+  const [employmentType, setEmploymentType] = useState<'freelancer' | 'employed'>('freelancer');
+  const [companyName, setCompanyName] = useState('Lindgren IT Consulting AB');
+  const [orgNumber, setOrgNumber] = useState('559123-4567');
+  const [consultingCompanyName, setConsultingCompanyName] = useState('');
+
+  // Education
+  const [hasEducation, setHasEducation] = useState(true);
+  const [educations, setEducations] = useState<EducationEntry[]>([
+    { type: 'kandidat', field: 'Datateknik', institution: 'KTH' }
+  ]);
+
+  // Links and uploads
   const [linkedIn, setLinkedIn] = useState('https://linkedin.com/in/annalindgren');
   const [portfolio, setPortfolio] = useState('https://annalindgren.dev');
-  const [cvFile, setCvFile] = useState<string | null>('CV_Anna_Lindgren.pdf');
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([
+    { name: 'CV_Anna_Lindgren.pdf', type: 'cv' }
+  ]);
+
+  // Bio
   const [bio, setBio] = useState('Erfaren fullstack-utvecklare med över 8 års erfarenhet av moderna webbteknologier. Specialiserad på React-ekosystemet och molnbaserade lösningar.');
+
+  const wordCount = bio.trim() === '' ? 0 : bio.trim().split(/\s+/).length;
 
   const handleRoleToggle = (role: string) => {
     setSelectedRoles(prev => {
@@ -93,12 +142,24 @@ const ConsultantProfileEdit = () => {
     );
   };
 
-  const handleScopeToggle = (option: string) => {
-    setScope(prev =>
-      prev.includes(option)
-        ? prev.filter(s => s !== option)
-        : [...prev, option]
+  const handleEducationTypeToggle = (typeId: string) => {
+    setEducations(prev => {
+      const exists = prev.find(e => e.type === typeId);
+      if (exists) {
+        return prev.filter(e => e.type !== typeId);
+      }
+      return [...prev, { type: typeId, field: '', institution: '' }];
+    });
+  };
+
+  const handleEducationFieldChange = (typeId: string, field: 'field' | 'institution', value: string) => {
+    setEducations(prev =>
+      prev.map(e => e.type === typeId ? { ...e, [field]: value } : e)
     );
+  };
+
+  const handleRemoveFile = (fileName: string) => {
+    setUploadedFiles(prev => prev.filter(f => f.name !== fileName));
   };
 
   const handleCancel = () => {
@@ -106,7 +167,6 @@ const ConsultantProfileEdit = () => {
   };
 
   const handleSave = () => {
-    // Would save data in real app
     console.log('Saving profile...');
     navigate('/consultant/profile');
   };
@@ -132,6 +192,23 @@ const ConsultantProfileEdit = () => {
         </div>
 
         <div className={styles.formBody}>
+          {/* Profile Image */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Profilbild</h2>
+            <div className={styles.profileImageSection}>
+              <div className={styles.profileImageWrapper}>
+                <img src={profileImage} alt="Profilbild" className={styles.profileImage} />
+                <button type="button" className={styles.changeImageButton}>
+                  <Camera size={16} />
+                </button>
+              </div>
+              <div className={styles.profileImageInfo}>
+                <p className={styles.profileImageHint}>Klicka på kameraikonen för att ändra bild</p>
+                <p className={styles.profileImageFormat}>Rekommenderat format: JPG eller PNG, minst 200x200px</p>
+              </div>
+            </div>
+          </div>
+
           {/* Personal Info */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Personuppgifter</h2>
@@ -252,6 +329,166 @@ const ConsultantProfileEdit = () => {
             </div>
           </div>
 
+          {/* Employment Type */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Anställningsform</h2>
+            <div className={styles.radioGroup}>
+              <div className={styles.radioItem}>
+                <input
+                  type="radio"
+                  id="employment-freelancer"
+                  name="employmentType"
+                  className={styles.radio}
+                  checked={employmentType === 'freelancer'}
+                  onChange={() => setEmploymentType('freelancer')}
+                />
+                <label htmlFor="employment-freelancer" className={styles.radioLabel}>
+                  Frilansare/Egenkonsult
+                </label>
+              </div>
+              <div className={styles.radioItem}>
+                <input
+                  type="radio"
+                  id="employment-employed"
+                  name="employmentType"
+                  className={styles.radio}
+                  checked={employmentType === 'employed'}
+                  onChange={() => setEmploymentType('employed')}
+                />
+                <label htmlFor="employment-employed" className={styles.radioLabel}>
+                  Anställd på konsultbolag
+                </label>
+              </div>
+            </div>
+            
+            {employmentType === 'freelancer' && (
+              <div className={styles.conditionalFields}>
+                <div className={styles.fieldGrid}>
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.label}>Företagsnamn</label>
+                    <input
+                      type="text"
+                      className={styles.input}
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      placeholder="Ditt företagsnamn"
+                    />
+                  </div>
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.label}>Organisationsnummer</label>
+                    <input
+                      type="text"
+                      className={styles.input}
+                      value={orgNumber}
+                      onChange={(e) => setOrgNumber(e.target.value)}
+                      placeholder="XXXXXX-XXXX"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {employmentType === 'employed' && (
+              <div className={styles.conditionalFields}>
+                <div className={styles.fieldGroup}>
+                  <label className={styles.label}>Konsultbolagets namn</label>
+                  <input
+                    type="text"
+                    className={styles.input}
+                    value={consultingCompanyName}
+                    onChange={(e) => setConsultingCompanyName(e.target.value)}
+                    placeholder="Namnet på konsultbolaget du är anställd hos"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Education */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Utbildning</h2>
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>Har du eftergymnasial utbildning?</label>
+              <div className={styles.radioGroup}>
+                <div className={styles.radioItem}>
+                  <input
+                    type="radio"
+                    id="education-yes"
+                    name="hasEducation"
+                    className={styles.radio}
+                    checked={hasEducation === true}
+                    onChange={() => setHasEducation(true)}
+                  />
+                  <label htmlFor="education-yes" className={styles.radioLabel}>Ja</label>
+                </div>
+                <div className={styles.radioItem}>
+                  <input
+                    type="radio"
+                    id="education-no"
+                    name="hasEducation"
+                    className={styles.radio}
+                    checked={hasEducation === false}
+                    onChange={() => setHasEducation(false)}
+                  />
+                  <label htmlFor="education-no" className={styles.radioLabel}>Nej</label>
+                </div>
+              </div>
+            </div>
+
+            {hasEducation && (
+              <div className={styles.conditionalFields}>
+                <label className={styles.label}>Välj typ av utbildning</label>
+                <div className={styles.educationTypes}>
+                  {educationTypes.map((type) => {
+                    const isSelected = educations.some(e => e.type === type.id);
+                    const education = educations.find(e => e.type === type.id);
+                    
+                    return (
+                      <div key={type.id} className={styles.educationTypeBlock}>
+                        <div className={styles.checkboxItem}>
+                          <input
+                            type="checkbox"
+                            id={`edu-${type.id}`}
+                            className={styles.checkbox}
+                            checked={isSelected}
+                            onChange={() => handleEducationTypeToggle(type.id)}
+                          />
+                          <label htmlFor={`edu-${type.id}`} className={styles.checkboxLabel}>
+                            {type.label}
+                          </label>
+                        </div>
+                        {isSelected && education && (
+                          <div className={styles.educationDetails}>
+                            <div className={styles.fieldGroup}>
+                              <label className={styles.label}>Inriktning</label>
+                              <input
+                                type="text"
+                                className={styles.input}
+                                value={education.field}
+                                onChange={(e) => handleEducationFieldChange(type.id, 'field', e.target.value)}
+                                placeholder="T.ex. Datateknik, Systemvetenskap"
+                              />
+                            </div>
+                            <div className={styles.fieldGroup}>
+                              <label className={styles.label}>Lärosäte</label>
+                              <input
+                                type="text"
+                                className={styles.input}
+                                value={education.institution}
+                                onChange={(e) => handleEducationFieldChange(type.id, 'institution', e.target.value)}
+                                placeholder="T.ex. KTH, Stockholms universitet"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Other */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Övrigt</h2>
@@ -269,51 +506,68 @@ const ConsultantProfileEdit = () => {
                 <label className={styles.label}>
                   Önskat timpris <span className={styles.labelHint}>(visas ej för kunder)</span>
                 </label>
-                <input
-                  type="number"
-                  className={styles.input}
+                <select
+                  className={styles.select}
                   value={hourlyRate}
                   onChange={(e) => setHourlyRate(e.target.value)}
-                  placeholder="SEK/timme"
-                />
+                >
+                  {hourlyRateOptions.map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
               </div>
               <div className={styles.fieldGroup}>
-                <label className={styles.label}>Önskad omfattning</label>
-                <div className={styles.checkboxGroup}>
-                  {scopeOptions.map((option) => (
-                    <div key={option} className={styles.checkboxItem}>
-                      <input
-                        type="checkbox"
-                        id={`scope-${option}`}
-                        className={styles.checkbox}
-                        checked={scope.includes(option)}
-                        onChange={() => handleScopeToggle(option)}
-                      />
-                      <label htmlFor={`scope-${option}`} className={styles.checkboxLabel}>
-                        {option}
-                      </label>
-                    </div>
-                  ))}
+                <label className={styles.label}>Är du tillgänglig 100%?</label>
+                <div className={styles.radioGroup}>
+                  <div className={styles.radioItem}>
+                    <input
+                      type="radio"
+                      id="fully-available-yes"
+                      name="fullyAvailable"
+                      className={styles.radio}
+                      checked={isFullyAvailable === true}
+                      onChange={() => setIsFullyAvailable(true)}
+                    />
+                    <label htmlFor="fully-available-yes" className={styles.radioLabel}>Ja</label>
+                  </div>
+                  <div className={styles.radioItem}>
+                    <input
+                      type="radio"
+                      id="fully-available-no"
+                      name="fullyAvailable"
+                      className={styles.radio}
+                      checked={isFullyAvailable === false}
+                      onChange={() => setIsFullyAvailable(false)}
+                    />
+                    <label htmlFor="fully-available-no" className={styles.radioLabel}>Nej</label>
+                  </div>
                 </div>
               </div>
               <div className={styles.fieldGroup}>
-                <label className={styles.label}>Distans</label>
+                <label className={styles.label}>Kan arbeta på plats hos kund?</label>
                 <div className={styles.radioGroup}>
-                  {distanceOptions.map((option) => (
-                    <div key={option} className={styles.radioItem}>
-                      <input
-                        type="radio"
-                        id={`distance-${option}`}
-                        name="distance"
-                        className={styles.radio}
-                        checked={distance === option}
-                        onChange={() => setDistance(option)}
-                      />
-                      <label htmlFor={`distance-${option}`} className={styles.radioLabel}>
-                        {option}
-                      </label>
-                    </div>
-                  ))}
+                  <div className={styles.radioItem}>
+                    <input
+                      type="radio"
+                      id="onsite-yes"
+                      name="canWorkOnsite"
+                      className={styles.radio}
+                      checked={canWorkOnsite === true}
+                      onChange={() => setCanWorkOnsite(true)}
+                    />
+                    <label htmlFor="onsite-yes" className={styles.radioLabel}>Ja</label>
+                  </div>
+                  <div className={styles.radioItem}>
+                    <input
+                      type="radio"
+                      id="onsite-no"
+                      name="canWorkOnsite"
+                      className={styles.radio}
+                      checked={canWorkOnsite === false}
+                      onChange={() => setCanWorkOnsite(false)}
+                    />
+                    <label htmlFor="onsite-no" className={styles.radioLabel}>Nej</label>
+                  </div>
                 </div>
               </div>
               <div className={styles.fieldGroup}>
@@ -336,23 +590,57 @@ const ConsultantProfileEdit = () => {
                   placeholder="https://..."
                 />
               </div>
-              <div className={styles.fieldGroup}>
-                <label className={styles.label}>CV</label>
-                <div className={styles.fileUpload}>
-                  <button type="button" className={styles.fileButton}>
-                    <Upload size={16} />
-                    Ladda upp CV
-                  </button>
-                  {cvFile && <span className={styles.fileName}>{cvFile}</span>}
+              <div className={`${styles.fieldGroup} ${styles.fieldGroupFull}`}>
+                <label className={styles.label}>Uppladdningar</label>
+                <p className={styles.uploadHint}>Ladda upp CV, certifikat och intyg</p>
+                <div className={styles.uploadSection}>
+                  <div className={styles.uploadButtons}>
+                    <button type="button" className={styles.fileButton}>
+                      <Upload size={16} />
+                      CV
+                    </button>
+                    <button type="button" className={styles.fileButton}>
+                      <Upload size={16} />
+                      Certifikat
+                    </button>
+                    <button type="button" className={styles.fileButton}>
+                      <Upload size={16} />
+                      Intyg
+                    </button>
+                  </div>
+                  {uploadedFiles.length > 0 && (
+                    <div className={styles.uploadedFilesList}>
+                      {uploadedFiles.map((file) => (
+                        <div key={file.name} className={styles.uploadedFile}>
+                          <span className={styles.uploadedFileName}>{file.name}</span>
+                          <span className={styles.uploadedFileType}>
+                            {file.type === 'cv' ? 'CV' : file.type === 'certificate' ? 'Certifikat' : 'Intyg'}
+                          </span>
+                          <button
+                            type="button"
+                            className={styles.removeFileButton}
+                            onClick={() => handleRemoveFile(file.name)}
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className={`${styles.fieldGroup} ${styles.fieldGroupFull}`}>
-                <label className={styles.label}>Kort beskrivning</label>
+                <div className={styles.labelWithCounter}>
+                  <label className={styles.label}>Övrig information</label>
+                  <span className={`${styles.wordCounter} ${wordCount > 500 ? styles.wordCounterExceeded : ''}`}>
+                    ({wordCount}/500 ord)
+                  </span>
+                </div>
                 <textarea
                   className={styles.textarea}
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  placeholder="Beskriv dig själv och din erfarenhet..."
+                  placeholder="Beskriv dig själv, din erfarenhet och vad du söker..."
                 />
               </div>
             </div>
