@@ -9,6 +9,8 @@ import Consultants from "./pages/Consultants/Consultants";
 import Assignments from "./pages/Assignments/Assignments";
 import Admin from "./pages/Admin/Admin";
 import Apply from "./pages/Apply/Apply";
+import ConsultantProfile from "./pages/ConsultantProfile/ConsultantProfile";
+import ConsultantProfileEdit from "./pages/ConsultantProfileEdit/ConsultantProfileEdit";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +29,8 @@ const App = () => (
           <Route path="/assignments" element={<Assignments />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/apply" element={<Apply />} />
+          <Route path="/consultant/profile" element={<ConsultantProfile />} />
+          <Route path="/consultant/profile/edit" element={<ConsultantProfileEdit />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
