@@ -51,3 +51,24 @@
 .emailLink:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+  .tabsBar {
+    margin: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .tabsList {
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tabButton {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .description {
+    font-size: 0.8125rem;
+  }
+}
