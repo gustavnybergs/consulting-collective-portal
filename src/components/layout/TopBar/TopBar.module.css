@@ -138,3 +138,13 @@
     display: inline;
   }
 }
+
+@media (max-width: 768px) {
+  .searchWrapper {
+    max-width: 100%;
+  }
+
+  .rightSection {
+    gap: 0.5rem;
+  }
+}

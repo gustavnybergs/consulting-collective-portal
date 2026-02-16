@@ -120,6 +120,17 @@
   gap: 1rem;
 }
 
+@media (max-width: 768px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .modal {
+    max-width: 100%;
+    margin: 0.5rem;
+  }
+}
+
 .uploadZone {
   border: 2px dashed hsl(var(--border));
   border-radius: 0.5rem;
