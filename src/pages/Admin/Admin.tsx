@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Search, MapPin, Mail, Phone, Linkedin, X, Copy, ExternalLink, Calendar } from 'lucide-react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout/DashboardLayout';
 import { ConsultantCard } from '@/components/admin/ConsultantCard/ConsultantCard';
+import { ConsultantModal } from '@/components/admin/ConsultantModal/ConsultantModal';
 import { pipelineConsultants, PipelineConsultant, roles, locations } from '@/data/pipelineConsultants';
 import styles from './Admin.module.css';
 
@@ -176,92 +177,10 @@ export default function Admin() {
 
         {/* Consultant Detail Modal */}
         {selectedConsultant && (
-          <div className={styles.modalOverlay} onClick={closeModal}>
-            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-              <button className={styles.modalCloseButton} onClick={closeModal}>
-                <X size={18} />
-              </button>
-              
-              <div className={styles.modalTop}>
-                <img
-                  src={selectedConsultant.profileImage}
-                  alt={`${selectedConsultant.firstName} ${selectedConsultant.lastName}`}
-                  className={styles.modalImage}
-                />
-                <div className={styles.modalInfo}>
-                  <h2 className={styles.modalName}>
-                    {selectedConsultant.firstName} {selectedConsultant.lastName}
-                  </h2>
-                  <p className={styles.modalRole}>{selectedConsultant.role}</p>
-                  <span className={styles.modalLocation}>
-                    <MapPin size={12} />
-                    {selectedConsultant.location}
-                  </span>
-                </div>
-              </div>
-
-              <div className={styles.modalSection}>
-                <h4 className={styles.modalSectionTitle}>Skills</h4>
-                <div className={styles.modalSkills}>
-                  {selectedConsultant.skills.map((skill) => (
-                    <span key={skill} className={styles.modalSkillTag}>{skill}</span>
-                  ))}
-                </div>
-              </div>
-
-              <div className={styles.modalSection}>
-                <h4 className={styles.modalSectionTitle}>Om</h4>
-                <p className={styles.modalBio}>{selectedConsultant.bio}</p>
-              </div>
-
-              <div className={styles.modalMeta}>
-                <div className={styles.modalMetaItem}>
-                  <Calendar size={14} />
-                  <span>Tillgänglig från {formatDate(selectedConsultant.availableFrom)}</span>
-                </div>
-              </div>
-
-              <div className={styles.modalLinks}>
-                <a
-                  href={`mailto:${selectedConsultant.email}`}
-                  className={styles.modalLinkItem}
-                >
-                  <Mail size={16} />
-                  <span>{selectedConsultant.email}</span>
-                </a>
-                <a
-                  href={`tel:${selectedConsultant.phone}`}
-                  className={styles.modalLinkItem}
-                >
-                  <Phone size={16} />
-                  <span>{selectedConsultant.phone}</span>
-                </a>
-                <a
-                  href={selectedConsultant.linkedIn}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.modalLinkItem}
-                >
-                  <Linkedin size={16} />
-                  <span>LinkedIn</span>
-                </a>
-                <a
-                  href={selectedConsultant.portfolio}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.modalLinkItem}
-                >
-                  <ExternalLink size={16} />
-                  <span>Portfolio</span>
-                </a>
-              </div>
-
-              <button className={styles.bookButton}>
-                <Calendar size={16} />
-                Boka ett möte
-              </button>
-            </div>
-          </div>
+          <ConsultantModal
+            consultant={selectedConsultant}
+            onClose={closeModal}
+          />
         )}
 
         {/* Contact Multiple Modal */}
